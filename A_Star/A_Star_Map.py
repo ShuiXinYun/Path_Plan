@@ -5,6 +5,7 @@ A* 寻路算法
 
 import A_Star
 
+
 def readmap():
     """
     读取地图，地图起点、终点以S、E表示
@@ -53,15 +54,22 @@ if __name__ == '__main__':
     mapinfo['map2d'][mapinfo['start'].x][mapinfo['start'].y] = 'S'
     mapinfo['map2d'][mapinfo['end'].x][mapinfo['end'].y] = 'E'
     mapinfo['map2d'].showArray2D()
+    print('-------------------------\nMap After Expansion:')
+    aStar.expansion(offset=1)
+    aStar.map2d.showArray2D()
 
     if pathList:
-        print("-------------------------")
+        print("-------------------------\nRoute Node:")
         for point in pathList:
             mapinfo['map2d'][point.x][point.y] = '#'
             print('{}:{}'.format(pathList.index(point), point), end=' ')
         print("\n----------------------\nRoute:")
 
         # 再次显示地图
+        # 重新将起点终点设为'S'、'E'
+        mapinfo['map2d'][mapinfo['start'].x][mapinfo['start'].y] = 'S'
+        mapinfo['map2d'][mapinfo['end'].x][mapinfo['end'].y] = 'E'
+
         mapinfo['map2d'].showArray2D()
     else:
         print("No Path found")

@@ -2,9 +2,10 @@
 A* 寻路算法
 """
 
+
 class Array2D:
 
-    def __init__(self, w, h, mapdata = []):
+    def __init__(self, w, h, mapdata=[]):
         self.w = w
         self.h = h
         if mapdata:
@@ -15,7 +16,7 @@ class Array2D:
     def showArray2D(self):
         for y in range(self.h):
             for x in range(self.w):
-                print(self.data[x][y], end='  ')
+                print(self.data[x][y], end=' ')
             print("")
 
     def __getitem__(self, item):
@@ -42,7 +43,6 @@ class Point:
 
 
 class AStar:
-
     class Node:  # 描述AStar算法中的节点数据
         def __init__(self, point, endPoint, g=0):
             self.point = point  # 自己的坐标
@@ -136,6 +136,41 @@ class AStar:
             currentNode.g = minF.g + step
             currentNode.father = minF
 
+    def setNearOnce(self, x, y):
+        """
+        将障碍物周围节点区域置位不可行
+        :param x: 障碍物节点x坐标
+        :param y: 障碍物节点坐标
+        :return: 按引用修改类对象map2d信息
+        """
+        offset = 1
+        points = [[-offset, offset], [0, offset], [offset, offset], [-offset, 0],
+                  [offset, 0], [-offset, -offset], [0, -offset], [offset, -offset]]
+        for point in points:
+            if 0 <= x + point[0] < self.map2d.w and 0 <= y + point[1] < self.map2d.h:
+                self.map2d.data[x + point[0]][y + point[1]] = 1
+
+    def expansion(self, offset=0):
+        """
+        地图障碍物膨胀
+        :param offset: 膨胀次数
+        :return: 按引用修改类对象map2d信息
+        """
+        for i in range(offset):
+            barrierxy = list()  # 不可行区域坐标点
+            for x in range(self.map2d.w):
+                for y in range(self.map2d.h):
+                    if self.map2d.data[x][y] not in [self.passTag, 'S', 'E']:
+                        barrierxy.append([x, y])
+
+            for xy in barrierxy:
+                self.setNearOnce(xy[0], xy[1])
+            '''
+            for i in range(offset):
+                for xy in barrierxy:
+                    self.setNear(xy[0], xy[1], i+1)
+            '''
+
     def start(self):
         """
         开始寻路
@@ -189,27 +224,30 @@ class AStar:
 
 if __name__ == '__main__':
     # 创建一个10*10的地图
-    map2d = Array2D(8, 10)
+    map2d = Array2D(15, 15)
     # 设置障碍
     for i in range(6):
-        map2d[4][i] = 1
+        map2d[3][i] = 1
     for i in range(4):
-        map2d[6][i] = 1
+        map2d[10][i] = 1
     # 显示地图当前样子
     print("Input Map:")
     map2d.showArray2D()
     # 创建AStar对象,并设置起点为0,0终点为9,0
-    pStart, pEnd = Point(0, 0), Point(7, 0)
+    pStart, pEnd = Point(0, 0), Point(14, 0)
     aStar = AStar(map2d, pStart, pEnd)
+    aStar.expansion(offset=1)
+    print("----------------------\nExpansion Map:")
+    aStar.map2d.showArray2D()
     # 开始寻路
     pathList = aStar.start()
     # 遍历路径点,在map2d上以'8'显示
     if pathList:
-        print("----------------------")
+        print("----------------------\nRoute Node:")
         for point in pathList:
             map2d[point.x][point.y] = '#'
             print('{}:{}'.format(pathList.index(point), point), end=' ')
-        print("\n----------------------")
+        print("\n----------------------\nRoute:")
         # 再次显示地图
         map2d[pStart.x][pStart.y], map2d[pEnd.x][pEnd.y] = 'S', 'E'
         map2d.showArray2D()
