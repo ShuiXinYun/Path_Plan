@@ -55,9 +55,6 @@ if __name__ == '__main__':
     mapinfo['map2d'].showArray2D()
     print('-------------------------\nMap After Expansion:')
     aStar.expansion(offset=1)
-    # 重新将起点终点设为'S'、'E'以显示膨胀后地图
-    mapinfo['map2d'][mapinfo['start'].x][mapinfo['start'].y] = 'S'
-    mapinfo['map2d'][mapinfo['end'].x][mapinfo['end'].y] = 'E'
     aStar.map2d.showArray2D()
     # 重新将起点终点设为0以寻路
     mapinfo['map2d'][mapinfo['start'].x][mapinfo['start'].y] = 0
