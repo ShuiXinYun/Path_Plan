@@ -18,7 +18,7 @@ def readmap():
     with open('A_Star_Map.txt', 'r') as f:
         for line in f:
             line = line.rstrip()
-            l = [int(s) if s!='S' and s!='E' else s for s in line]
+            l = [int(s) if s != 'S' and s != 'E' else s for s in line]
             l_t.append(l)
             h += 1
             w = len(l)
@@ -31,10 +31,10 @@ def readmap():
                 if c == 'E':
                     mapinfo.update({'end': A_Star.Point(l.index(c), h - 1)})  # 记录终点
                     l_t[-1][l.index(c)] = 0  # 起点、终点并非障碍
-
-    l_t_t = []
+    # 地图信息存储
+    l_t_t = list()
     for i in range(w):
-        t = []
+        t = list()
         for j in range(h):
             t.append(l_t[j][i])
         l_t_t.append(t)

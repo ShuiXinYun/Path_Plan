@@ -141,7 +141,7 @@ class AStar:
         将障碍物周围节点区域置位不可行
         :param x: 障碍物节点x坐标
         :param y: 障碍物节点坐标
-        :return: 按引用修改类对象map2d信息
+        :return: None, 按引用修改类对象map2d信息
         """
         offset = 1
         points = [[-offset, offset], [0, offset], [offset, offset], [-offset, 0],
@@ -154,7 +154,7 @@ class AStar:
         """
         地图障碍物膨胀
         :param offset: 膨胀次数
-        :return: 按引用修改类对象map2d信息
+        :return: None, 按引用修改类对象map2d信息
         """
         for i in range(offset):
             barrierxy = list()  # 不可行区域坐标点
@@ -165,11 +165,6 @@ class AStar:
 
             for xy in barrierxy:
                 self.setNearOnce(xy[0], xy[1])
-            '''
-            for i in range(offset):
-                for xy in barrierxy:
-                    self.setNear(xy[0], xy[1], i+1)
-            '''
 
     def start(self):
         """
