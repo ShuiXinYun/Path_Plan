@@ -49,14 +49,20 @@ if __name__ == '__main__':
     print('start:{}, end:{}'.format(mapinfo['start'], mapinfo['end']))
     print('-------------------------\nMap:')
 
-    pathList = aStar.start()  # 此句必须在置'S'、'E'之前
-    # 重新将起点终点设为'S'、'E'
+    # 重新将起点终点设为'S'、'E'以显示地图
     mapinfo['map2d'][mapinfo['start'].x][mapinfo['start'].y] = 'S'
     mapinfo['map2d'][mapinfo['end'].x][mapinfo['end'].y] = 'E'
     mapinfo['map2d'].showArray2D()
     print('-------------------------\nMap After Expansion:')
     aStar.expansion(offset=1)
+    # 重新将起点终点设为'S'、'E'以显示膨胀后地图
+    mapinfo['map2d'][mapinfo['start'].x][mapinfo['start'].y] = 'S'
+    mapinfo['map2d'][mapinfo['end'].x][mapinfo['end'].y] = 'E'
     aStar.map2d.showArray2D()
+    # 重新将起点终点设为0以寻路
+    mapinfo['map2d'][mapinfo['start'].x][mapinfo['start'].y] = 0
+    mapinfo['map2d'][mapinfo['end'].x][mapinfo['end'].y] = 0
+    pathList = aStar.start()
 
     if pathList:
         print("-------------------------\nRoute Node:")
